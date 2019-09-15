@@ -15,6 +15,7 @@ function parseLine(line) {
         commandType: commandTypes.PUSH,
         arg1,
         arg2: toInt(arg2),
+        vmLine: line,
       };
     }
     case 'pop':
@@ -22,6 +23,7 @@ function parseLine(line) {
         commandType: commandTypes.POP,
         arg1,
         arg2: toInt(arg2),
+        vmLine: line,
       };
     case 'add':
     case 'sub':
@@ -35,6 +37,7 @@ function parseLine(line) {
       return {
         commandType: commandTypes.ARITHMETIC,
         arg1: command,
+        vmLine: line,
       };
     default:
       throw new Error(`Unvalid command ${command}`);
