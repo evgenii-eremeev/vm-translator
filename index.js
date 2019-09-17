@@ -4,14 +4,15 @@ const path = require('path');
 const parser = require('./src/parser');
 const writer = require('./src/codeWriter');
 
-const { name: fileName } = path.parse(process.argv[2]);
+const file = path.parse(process.argv[2]);
+
 const vmPath = path.resolve(process.cwd(), process.argv[2]);
-const asmPath = path.resolve(process.cwd(), fileName + '.asm');
+const asmPath = path.resolve(process.cwd(), file.dir, file.name + '.asm');
 
 async function main() {
   const vmCode = await readFile(vmPath, 'utf8');
   const commandsIt = parser(vmCode);
-  const asmCode = [...writer(commandsIt)].join('\n');
+  const asmCode = [...writer(commandsIt, file.name)].join('\n');
   await writeFile(asmPath, asmCode, 'utf8');
 }
 

@@ -1,4 +1,4 @@
-const commandTypes = require('./commandTypes');
+const { PUSH, POP, ARITHMETIC } = require('../constants').COMMAND_TYPES;
 
 function toInt(arg) {
   if (!/^[0-9]+$/.test(arg)) {
@@ -12,18 +12,18 @@ function parseLine(line) {
   switch (command) {
     case 'push': {
       return {
-        commandType: commandTypes.PUSH,
+        commandType: PUSH,
         arg1,
         arg2: toInt(arg2),
-        vmLine: line,
+        vm: line,
       };
     }
     case 'pop':
       return {
-        commandType: commandTypes.POP,
+        commandType: POP,
         arg1,
         arg2: toInt(arg2),
-        vmLine: line,
+        vm: line,
       };
     case 'add':
     case 'sub':
@@ -31,13 +31,13 @@ function parseLine(line) {
     case 'eq':
     case 'gt':
     case 'lt':
-    case 'end':
+    case 'and':
     case 'or':
     case 'not':
       return {
-        commandType: commandTypes.ARITHMETIC,
+        commandType: ARITHMETIC,
         arg1: command,
-        vmLine: line,
+        vm: line,
       };
     default:
       throw new Error(`Unvalid command ${command}`);

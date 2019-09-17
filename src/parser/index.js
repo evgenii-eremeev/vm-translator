@@ -1,14 +1,16 @@
-const { lines } = require('../util');
+const { lines, clean } = require('../util');
 const parseLine = require('./parseLine');
 
 function* parser(vmCode) {
   let count = 0;
-  for (const line of lines(vmCode)) {
+  for (let line of lines(vmCode)) {
+    line = clean(line);
+    if (!line) continue;
     try {
       yield parseLine(line);
     } catch (error) {
       throw new Error(
-        `[PARSE ERROR] ${error.messsage} in line ${line}:${count}`
+        `[PARSE ERROR] ${error.messsage || error} in line ${line}:${count}`
       );
     }
     count++;
