@@ -9,33 +9,42 @@ function jump(op) {
 }
 
 // prettier-ignore
+const SNIPPETS = {
+  POP_M: [
+    // SP--, M = *SP
+    '@SP',
+    'AM=M-1',
+  ],
+  POP_D: [
+    // SP--, D = *SP,
+    '@SP',
+    'AM=M-1',
+    'D=M'
+  ],
+  PUSH: [
+    // *SP = D, SP++
+    '@SP', 
+    'A=M', 
+    'M=D', 
+    '@SP', 
+    'M=M+1'
+  ]
+};
+
 function writeArithmetic2(op) {
   const TRUE = label('TRUE');
   const END = label('END');
   const code = [
-    // SP--, R13 = *SP
-    '@SP',
-    'AM=M-1',
-    'D=M',
-    '@R13',
-    'M=D',
-    // SP--, R14 = *SP
-    '@SP',
-    'AM=M-1',
-    'D=M',
-    '@R14',
-    'M=D',
-    // D = R14 = x, M = R13 = y
-    '@R14',
-    'D=M',
-    '@R13',
+    // M = x, D = y
+    ...SNIPPETS.POP_D,
+    ...SNIPPETS.POP_M,
   ];
   switch (op) {
     case 'add':
       code.push('D=D+M');
       break;
     case 'sub':
-      code.push('D=D-M');
+      code.push('D=M-D');
       break;
     case 'and':
       code.push('D=D&M');
@@ -47,7 +56,7 @@ function writeArithmetic2(op) {
     case 'gt':
     case 'lt':
       code.push(
-        'D=D-M',
+        'D=M-D',
         `@${TRUE}`,
         `D;${jump(op)}`,
         'D=0',
@@ -59,24 +68,12 @@ function writeArithmetic2(op) {
       );
       break;
   }
-  code.push(
-    '@SP', 
-    'A=M', 
-    'M=D', 
-    '@SP', 
-    'M=M+1'
-  );
+  code.push(...SNIPPETS.PUSH);
   return asm(...code);
 }
 
-// prettier-ignore
 function writeArithmetic1(op) {
-  const code = [
-    // SP--, D = *SP
-    '@SP',
-    'AM=M-1',
-    'D=M',
-  ];
+  const code = [...SNIPPETS.POP_D];
   switch (op) {
     case 'neg':
       code.push('D=-D');
@@ -85,13 +82,7 @@ function writeArithmetic1(op) {
       code.push('D=!D');
       break;
   }
-  code.push(
-    '@SP',
-    'A=M',
-    'M=D',
-    '@SP',
-    'M=M+1'
-  );
+  code.push(...SNIPPETS.PUSH);
   return asm(...code);
 }
 
