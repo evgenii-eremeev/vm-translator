@@ -19,7 +19,12 @@ function clean(str) {
   return str.replace(/\/\/.+/, '').trim();
 }
 
+function asm(...args) {
+  return args.join('\n');
+}
+
 module.exports = {
   lines,
   clean,
+  asm,
 };

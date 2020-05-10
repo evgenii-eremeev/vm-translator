@@ -1,9 +1,10 @@
+const { asm } = require('../util');
 const { SEGMENTS } = require('../constants');
 
 function writePopSegment(segment, index) {
   const segmentPointer = SEGMENTS[segment];
 
-  return [
+  return asm(
     // addr = segmentPointer + i
     `@${index}`,
     `D=A`,
@@ -18,19 +19,19 @@ function writePopSegment(segment, index) {
     // *addr = *SP
     `@R13`,
     `A=M`,
-    `M=D`,
-  ].join('\n');
+    `M=D`
+  );
 }
 
 function writePopLabel(label) {
   // prettier-ignore
-  return [
+  return asm(
     `@SP`,
     `AM=M-1`,
     `D=M`,
     `@${label}`,
     `M=D`,
-  ].join('\n');
+  );
 }
 
 function writePop(segment, index, fileName) {
@@ -49,7 +50,7 @@ function writePop(segment, index, fileName) {
       return writePopLabel(label);
     }
     case 'pointer': {
-      if (index < 0 || index > 1)
+      if (![0, 1].includes(index))
         throw new Error('Index of push should be 0 or 1');
       const label = index === 0 ? 'THIS' : 'THAT';
       return writePopLabel(label);

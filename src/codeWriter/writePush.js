@@ -1,9 +1,11 @@
+const { asm } = require('../util');
+
 const { SEGMENTS } = require('../constants');
 
 function writePushSegment(segment, index) {
   const segmentPointer = SEGMENTS[segment];
 
-  return [
+  return asm(
     // addr = segmentPointer + i
     `@${index}`,
     `D=A`,
@@ -16,13 +18,13 @@ function writePushSegment(segment, index) {
     `M=D`,
     // SP++
     `@SP`,
-    `M=M+1`,
-  ].join('\n');
+    `M=M+1`
+  );
 }
 
 function writePushConstant(c) {
   // prettier-ignore
-  return [
+  return asm(
     `@${c}`,
     `D=A`,
     `@SP`,
@@ -30,12 +32,12 @@ function writePushConstant(c) {
     `M=D`,
     `@SP`,
     `M=M+1`
-  ].join('\n');
+  );
 }
 
 function writePushLabel(label) {
   // prettier-ignore
-  return [
+  return asm(
     `@${label}`,
     `D=M`,
     `@SP`,
@@ -43,7 +45,7 @@ function writePushLabel(label) {
     `M=D`,
     `@SP`,
     `M=M+1`
-  ].join('\n');
+  );
 }
 
 function writePush(segment, index, fileName) {
