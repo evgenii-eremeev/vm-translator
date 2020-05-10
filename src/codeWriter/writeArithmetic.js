@@ -1,10 +1,4 @@
-const { asm } = require('../util');
-
-const labelCount = {};
-function label(a) {
-  labelCount[a] = labelCount[a] || 0;
-  return `${a}_${labelCount[a]++}`;
-}
+const { asm, label } = require('../util');
 
 function jump(op) {
   return {
@@ -14,6 +8,7 @@ function jump(op) {
   }[op];
 }
 
+// prettier-ignore
 function writeArithmetic2(op) {
   const TRUE = label('TRUE');
   const END = label('END');
@@ -64,7 +59,13 @@ function writeArithmetic2(op) {
       );
       break;
   }
-  code.push('@SP', 'A=M', 'M=D', '@SP', 'M=M+1');
+  code.push(
+    '@SP', 
+    'A=M', 
+    'M=D', 
+    '@SP', 
+    'M=M+1'
+  );
   return asm(...code);
 }
 

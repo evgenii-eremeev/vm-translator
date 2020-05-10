@@ -23,8 +23,15 @@ function asm(...args) {
   return args.join('\n');
 }
 
+const labelCount = {};
+function label(a) {
+  labelCount[a] = labelCount[a] || 0;
+  return `${a}_${labelCount[a]++}`;
+}
+
 module.exports = {
   lines,
   clean,
   asm,
+  label,
 };
