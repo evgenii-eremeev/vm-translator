@@ -1,4 +1,5 @@
 const { asm, label } = require('../util');
+const { SNIPPETS } = require('../constants');
 
 function jump(op) {
   return {
@@ -7,29 +8,6 @@ function jump(op) {
     lt: 'JLT',
   }[op];
 }
-
-// prettier-ignore
-const SNIPPETS = {
-  POP_M: [
-    // SP--, M = *SP
-    '@SP',
-    'AM=M-1',
-  ],
-  POP_D: [
-    // SP--, D = *SP,
-    '@SP',
-    'AM=M-1',
-    'D=M'
-  ],
-  PUSH: [
-    // *SP = D, SP++
-    '@SP', 
-    'A=M', 
-    'M=D', 
-    '@SP', 
-    'M=M+1'
-  ]
-};
 
 function writeArithmetic2(op) {
   const TRUE = label('TRUE');

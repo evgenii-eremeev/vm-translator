@@ -1,4 +1,4 @@
-exports.COMMAND_TYPES = {
+const COMMAND_TYPES = {
   ARITHMETIC: 'C_ARITHMETIC',
   PUSH: 'C_PUSH',
   POP: 'C_POP',
@@ -10,9 +10,33 @@ exports.COMMAND_TYPES = {
   CALL: 'C_CALL',
 };
 
-exports.SEGMENTS = {
+const SEGMENTS = {
   local: 'LCL',
   argument: 'ARG',
   this: 'THIS',
   that: 'THAT',
 };
+
+const SNIPPETS = {
+  POP_M: [
+    // SP--, M = *SP
+    '@SP',
+    'AM=M-1',
+  ],
+  POP_D: [
+    // SP--, D = *SP,
+    '@SP',
+    'AM=M-1',
+    'D=M',
+  ],
+  PUSH: [
+    // *SP = D, SP++
+    '@SP',
+    'A=M',
+    'M=D',
+    '@SP',
+    'M=M+1',
+  ],
+};
+
+module.exports = { COMMAND_TYPES, SEGMENTS, SNIPPETS };

@@ -33,6 +33,36 @@ test('parses arithmetic type', () => {
   expect(parseLine(line)).toEqual(result);
 });
 
+test('parses label type', () => {
+  const line = 'label LOOP';
+  const result = {
+    commandType: COMMAND_TYPES.LABEL,
+    arg1: 'LOOP',
+    vm: line,
+  };
+  expect(parseLine(line)).toEqual(result);
+});
+
+test('parses label goto type', () => {
+  const line = 'goto LOOP';
+  const result = {
+    commandType: COMMAND_TYPES.GOTO,
+    arg1: 'LOOP',
+    vm: line,
+  };
+  expect(parseLine(line)).toEqual(result);
+});
+
+test('parses label if-goto type', () => {
+  const line = 'if-goto LOOP_END';
+  const result = {
+    commandType: COMMAND_TYPES.IF,
+    arg1: 'LOOP_END',
+    vm: line,
+  };
+  expect(parseLine(line)).toEqual(result);
+});
+
 test('throws error on invalid command', () => {
   const line = 'invalid static 0';
   expect(() => parseLine(line)).toThrow();

@@ -1,4 +1,11 @@
-const { PUSH, POP, ARITHMETIC } = require('../constants').COMMAND_TYPES;
+const {
+  PUSH,
+  POP,
+  ARITHMETIC,
+  LABEL,
+  GOTO,
+  IF,
+} = require('../constants').COMMAND_TYPES;
 
 function toInt(arg) {
   if (!/^[0-9]+$/.test(arg)) {
@@ -7,15 +14,15 @@ function toInt(arg) {
   return Number(arg);
 }
 
-function parseLine(line) {
-  const [command, arg1, arg2] = line.split(' ');
+function parseLine(vm) {
+  const [command, arg1, arg2] = vm.split(' ');
   switch (command) {
     case 'push': {
       return {
         commandType: PUSH,
         arg1,
         arg2: toInt(arg2),
-        vm: line,
+        vm,
       };
     }
     case 'pop':
@@ -23,7 +30,7 @@ function parseLine(line) {
         commandType: POP,
         arg1,
         arg2: toInt(arg2),
-        vm: line,
+        vm,
       };
     case 'add':
     case 'sub':
@@ -37,7 +44,25 @@ function parseLine(line) {
       return {
         commandType: ARITHMETIC,
         arg1: command,
-        vm: line,
+        vm,
+      };
+    case 'label':
+      return {
+        commandType: LABEL,
+        arg1,
+        vm,
+      };
+    case 'goto':
+      return {
+        commandType: GOTO,
+        arg1,
+        vm,
+      };
+    case 'if-goto':
+      return {
+        commandType: IF,
+        arg1,
+        vm,
       };
     default:
       throw new Error(`Unvalid command ${command}`);

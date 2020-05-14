@@ -1,7 +1,15 @@
-const { PUSH, POP, ARITHMETIC } = require('../constants').COMMAND_TYPES;
+const {
+  PUSH,
+  POP,
+  ARITHMETIC,
+  LABEL,
+  GOTO,
+  IF,
+} = require('../constants').COMMAND_TYPES;
 const writePush = require('./writePush');
 const writePop = require('./writePop');
 const writeArithmetic = require('./writeArithmetic');
+const { writeLabel, writeGoto, writeIf } = require('./branching');
 
 function* writer(commandsIt, fileName) {
   for (const { commandType, arg1, arg2, vm } of commandsIt) {
@@ -15,6 +23,15 @@ function* writer(commandsIt, fileName) {
         break;
       case ARITHMETIC:
         yield writeArithmetic(arg1);
+        break;
+      case LABEL:
+        yield writeLabel(arg1);
+        break;
+      case GOTO:
+        yield writeGoto(arg1);
+        break;
+      case IF:
+        yield writeIf(arg1);
         break;
       default:
         throw new Error(`Unknown command type ${commandType}`);
