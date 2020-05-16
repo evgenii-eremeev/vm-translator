@@ -1,4 +1,4 @@
-const { asm } = require('../util');
+const { asm } = require('../util/util');
 const { SEGMENTS } = require('../constants');
 
 function writePopSegment(segment, index) {

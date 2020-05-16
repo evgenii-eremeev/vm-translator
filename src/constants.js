@@ -29,7 +29,7 @@ const SNIPPETS = {
     'AM=M-1',
     'D=M',
   ],
-  PUSH: [
+  PUSH_D: [
     // *SP = D, SP++
     '@SP',
     'A=M',
@@ -39,4 +39,6 @@ const SNIPPETS = {
   ],
 };
 
-module.exports = { COMMAND_TYPES, SEGMENTS, SNIPPETS };
+const FRAME_SIZE = 5;
+
+module.exports = { COMMAND_TYPES, SEGMENTS, SNIPPETS, FRAME_SIZE };

@@ -1,5 +1,5 @@
 const { SNIPPETS } = require('../constants');
-const { asm } = require('../util');
+const { asm } = require('../util/util');
 
 function writeLabel(label) {
   return `(${label})`;
@@ -18,7 +18,7 @@ function writeIf(label) {
   return asm(
     ...SNIPPETS.POP_D,
     `@${label}`,
-    'D;JGT'
+    'D;JNE'
   );
 }
 

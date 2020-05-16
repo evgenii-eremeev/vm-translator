@@ -5,6 +5,9 @@ const {
   LABEL,
   GOTO,
   IF,
+  CALL,
+  FUNCTION,
+  RETURN,
 } = require('../constants').COMMAND_TYPES;
 
 function toInt(arg) {
@@ -62,6 +65,25 @@ function parseLine(vm) {
       return {
         commandType: IF,
         arg1,
+        vm,
+      };
+    case 'call':
+      return {
+        commandType: CALL,
+        arg1,
+        arg2: toInt(arg2),
+        vm,
+      };
+    case 'function':
+      return {
+        commandType: FUNCTION,
+        arg1,
+        arg2: toInt(arg2),
+        vm,
+      };
+    case 'return':
+      return {
+        commandType: RETURN,
         vm,
       };
     default:

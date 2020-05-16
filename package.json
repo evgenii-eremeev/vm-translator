@@ -2,12 +2,12 @@
   "name": "vm-translator",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "translator.js",
   "scripts": {
     "test": "jest"
   },
   "bin": {
-    "vm-translator": "index.js"
+    "vm-translator": "translator.js"
   },
   "author": "",
   "license": "ISC",

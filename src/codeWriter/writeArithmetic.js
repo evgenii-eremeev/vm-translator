@@ -1,4 +1,4 @@
-const { asm, label } = require('../util');
+const { asm, label } = require('../util/util');
 const { SNIPPETS } = require('../constants');
 
 function jump(op) {
@@ -46,7 +46,7 @@ function writeArithmetic2(op) {
       );
       break;
   }
-  code.push(...SNIPPETS.PUSH);
+  code.push(...SNIPPETS.PUSH_D);
   return asm(...code);
 }
 
@@ -60,7 +60,7 @@ function writeArithmetic1(op) {
       code.push('D=!D');
       break;
   }
-  code.push(...SNIPPETS.PUSH);
+  code.push(...SNIPPETS.PUSH_D);
   return asm(...code);
 }
 

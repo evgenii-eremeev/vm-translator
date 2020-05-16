@@ -16,10 +16,13 @@ function* lines(data) {
 }
 
 function clean(str) {
-  return str.replace(/\/\/.+/, '').trim();
+  return str.replace(/\/\/.*/, '').trim();
 }
 
 function asm(...args) {
+  if (Array.isArray(args[0])) {
+    args = args[0];
+  }
   return args.join('\n');
 }
 

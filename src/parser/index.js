@@ -1,4 +1,4 @@
-const { lines, clean } = require('../util');
+const { lines, clean } = require('../util/util');
 const parseLine = require('./parseLine');
 
 function* parser(vmCode) {

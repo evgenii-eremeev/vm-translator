@@ -1,6 +1,6 @@
-const { asm } = require('../util');
+const { asm } = require('../util/util');
 
-const { SEGMENTS } = require('../constants');
+const { SEGMENTS, SNIPPETS } = require('../constants');
 
 function writePushSegment(segment, index) {
   const segmentPointer = SEGMENTS[segment];
@@ -12,13 +12,7 @@ function writePushSegment(segment, index) {
     `@${segmentPointer}`,
     `A=D+M`,
     `D=M`,
-    // *SP = *addr
-    `@SP`,
-    `A=M`,
-    `M=D`,
-    // SP++
-    `@SP`,
-    `M=M+1`
+    ...SNIPPETS.PUSH_D
   );
 }
 
@@ -27,11 +21,7 @@ function writePushConstant(c) {
   return asm(
     `@${c}`,
     `D=A`,
-    `@SP`,
-    `A=M`,
-    `M=D`,
-    `@SP`,
-    `M=M+1`
+    ...SNIPPETS.PUSH_D
   );
 }
 
@@ -40,11 +30,7 @@ function writePushLabel(label) {
   return asm(
     `@${label}`,
     `D=M`,
-    `@SP`,
-    `A=M`,
-    `M=D`,
-    `@SP`,
-    `M=M+1`
+    ...SNIPPETS.PUSH_D
   );
 }
 
@@ -76,4 +62,6 @@ function writePush(segment, index, fileName) {
   }
 }
 
-module.exports = writePush;
+module.exports = {
+  writePush,
+};
